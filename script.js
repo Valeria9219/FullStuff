@@ -7,29 +7,39 @@ let title = prompt('Как называется ваш проект?');
 let screens = prompt('Какие типы экранов нужно разработать?');
 let screenPrice = +prompt('Сколько будет стоить данная работа?');
 let adaptive = confirm('Нужен ли адаптив на сайте?');
+
+let allServicePrices;
+let fullPrice;
+let servicePercentPrice;
+
+
 let service1 = prompt('Какой дополнительный тип услуги нужен?');
 let servicePrice1 = +prompt('Сколько это будет стоить?');
 let service2 = prompt('Какой дополнительный тип услуги нужен?');
 let servicePrice2 = +prompt('Сколько это будет стоить?');
-let fullPrice = screenPrice + servicePrice1 + servicePrice2;
 
 function getFullPrice(screenPr, allServicePr) {           //4урок функция вывода стоимости верстки и доп услуг
     return screenPr + allServicePr;
 }
 
-const getTitle = function (Tit) {                        //4урок корректировка значения переменной title    КОСТЫЛИ  :'(
-    let str = "";
-    let a = true;
-    for (let char of Tit) {
-        if ((char == " ") || (a == false)) str = str + char.toLowerCase();
-        else {
-            str = str + char.toUpperCase();
-            console.log(char.toUpperCase());
-            a = false;
-        }
-    }
-    return str;
+// const getTitle = function (Tit) {                        //4урок корректировка значения переменной title    КОСТЫЛИ  :'(
+//     let str = "";
+//     let a = true;
+//     for (let char of Tit) {
+//         if ((char == " ") || (a == false)) str = str + char.toLowerCase();
+//         else {
+//             str = str + char.toUpperCase();
+//             console.log(char.toUpperCase());
+//             a = false;
+//         }
+//     }
+//     return str;
+// }
+
+const getTitle = function (Tit) {
+    return Tit.trim()[0].toUpperCase() + Tit.trim().substr(1).toLowerCase();
 }
+
 
 const getAllServicePrices = function (service1, service2) {                  //4урок функция вывода доп услуг
     return service1 + service2
@@ -50,19 +60,23 @@ const getRollBackMessage = function (prise) {
     if (prise <= 0) return "Что то пошло не так";
 }
 
+
+
+allServicePrices = getAllServicePrices(servicePrice1, servicePrice2);        //запись в переменную суммы доп услуг
+fullPrice = getFullPrice(screenPrice, allServicePrices)                      //запись в переменную стоимости верстки и доп услуг
+servicePercentPrice = getServicePercentPrices(fullPrice, rollback);          //запись в переменную итоговой стоимости за вычетом процента отката
+title = (getTitle(title));                                                    //вывод скорректированного значения 
+
 showTypeOf(title);
 showTypeOf(fullPrice);
 showTypeOf(adaptive);
 
-console.log(getRollBackMessage(fullPrice));
-
-let allServicePrices = getAllServicePrices(servicePrice1, servicePrice2);        //запись в переменную суммы доп услуг
-let fullPrice = getFullPrice(screenPrice, allServicePrices)                      //запись в переменную стоимости верстки и доп услуг
-let servicePercentPrice = getServicePercentPrices(fullPrice, rollback);          //запись в переменную итоговой стоимости за вычетом процента отката
-
 console.log(screens.split(", "))                                                 //вывод строки из переменной screens в виде массива
-
-console.log(getTitle(title));                                                    //вывод скорректированного значения 
+console.log(getRollBackMessage(fullPrice));
+console.log(screens.length);
+console.log("Стоимость верстки экранов " + screenPrice
+    + " долларов \nСтоимость разработки сайта "
+    + fullPrice + " долларов");
 
 
 
