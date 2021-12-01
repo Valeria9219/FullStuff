@@ -1,48 +1,60 @@
-// js файл
-"use strict"
+"use strict";
 
 const rollback = 15;
 
-let title = prompt('Как называется ваш проект?').trim();
-let screens = prompt('Какие типы экранов нужно разработать?');
-let screenPrice = +prompt('Сколько будет стоить данная работа?');
-let adaptive = confirm('Нужен ли адаптив на сайте?');
-
+let title;
+let screens;
+let screenPrice;
+let adaptive;
 let allServicePrices;
 let fullPrice;
 let servicePercentPrice;
+let service1;
+let service2;
 
+const isNumber = function (num) {
+    return !isNaN(parseFloat(num)) && (isFinite(num));
+}
 
-let service1 = prompt('Какой дополнительный тип услуги нужен?');
-let servicePrice1 = +prompt('Сколько это будет стоить?');
-let service2 = prompt('Какой дополнительный тип услуги нужен?');
-let servicePrice2 = +prompt('Сколько это будет стоить?');
+const asking = function () {
+    title = prompt('Как называется ваш проект?', "Калькулятор верстки");
+    screens = prompt('Какие типы экранов нужно разработать?', "Простые, сложные");
+
+    screenPrice = prompt('Сколько будет стоить данная работа?');
+
+    do {
+        screenPrice = prompt('Сколько будет стоить данная работа?');
+    } while (!isNumber(screenPrice));                                                    //вывод строка!!!!!!!!
+    screenPrice = +screenPrice;
+    adaptive = confirm('Нужен ли адаптив на сайте?');
+
+}
+
+const getAllServicePrices = function () {                   //4урок функция вывода доп услуг
+    let sum = 0;
+    let question;
+    for (let i = 0; i < 2; i++) {
+        if (i === 0) {
+            service1 = prompt('Какой дополнительный тип услуги нужен?');
+        }
+        else if (i === 1) {
+            service2 = prompt('Какой дополнительный тип услуги нужен?');
+        }
+
+        do {
+            question = prompt('Сколько будет стоить данная работа?');
+        } while (!isNumber(question));
+        sum += +question;
+    }
+    return sum;
+}
 
 function getFullPrice(screenPr, allServicePr) {           //4урок функция вывода стоимости верстки и доп услуг
     return screenPr + allServicePr;
 }
 
-// const getTitle = function (Tit) {                        //4урок корректировка значения переменной title    КОСТЫЛИ  :'(
-//     let str = "";
-//     let a = true;
-//     for (let char of Tit) {
-//         if ((char == " ") || (a == false)) str = str + char.toLowerCase();
-//         else {
-//             str = str + char.toUpperCase();
-//             console.log(char.toUpperCase());
-//             a = false;
-//         }
-//     }
-//     return str;
-// }
-
 const getTitle = function (Tit) {
     return Tit.trim()[0].toUpperCase() + Tit.trim().substr(1).toLowerCase();
-}
-
-
-const getAllServicePrices = function (service1, service2) {                  //4урок функция вывода доп услуг
-    return service1 + service2
 }
 
 const getServicePercentPrices = function (fullPr, rollb) {                  //4урок функция вывода итоговой стоимости - процент отката
@@ -60,9 +72,8 @@ const getRollBackMessage = function (prise) {
     if (prise <= 0) return "Что то пошло не так";
 }
 
-
-
-allServicePrices = getAllServicePrices(servicePrice1, servicePrice2);        //запись в переменную суммы доп услуг
+asking();
+allServicePrices = getAllServicePrices();        //запись в переменную суммы доп услуг
 fullPrice = getFullPrice(screenPrice, allServicePrices)                      //запись в переменную стоимости верстки и доп услуг
 servicePercentPrice = getServicePercentPrices(fullPrice, rollback);          //запись в переменную итоговой стоимости за вычетом процента отката
 title = (getTitle(title));                                                    //вывод скорректированного значения 
@@ -70,6 +81,9 @@ title = (getTitle(title));                                                    //
 showTypeOf(title);
 showTypeOf(fullPrice);
 showTypeOf(adaptive);
+showTypeOf(screenPrice);
+
+console.log("allServicePrices", allServicePrices);
 
 console.log(screens.split(", "))                                                 //вывод строки из переменной screens в виде массива
 console.log(getRollBackMessage(fullPrice));
