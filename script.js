@@ -3,7 +3,7 @@
 
 const rollback = 15;
 
-let title = prompt('Как называется ваш проект?');
+let title = prompt('Как называется ваш проект?').trim();
 let screens = prompt('Какие типы экранов нужно разработать?');
 let screenPrice = +prompt('Сколько будет стоить данная работа?');
 let adaptive = confirm('Нужен ли адаптив на сайте?');
